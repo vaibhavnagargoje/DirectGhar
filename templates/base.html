@@ -1,0 +1,164 @@
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DirectGhar | 100% Broker-Free Rentals{% endblock %}</title>
+    
+    <!-- Alpine.js for interactivity (Mobile menu, Dropdowns) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Tailwind CSS (CDN for Dev - use Build process for Prod) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#1a4570',
+                            orange: '#ee8939',
+                            dark: '#123150', // slightly darker for hovers
+                            light: '#f0f4f8',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen text-gray-800">
+
+    <!-- NAVBAR -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                
+                <!-- Left: Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <a href="{% url 'home' %}" class="flex items-center gap-2">
+                        <!-- Simple CSS Logo Icon -->
+                        <div class="w-8 h-8 bg-brand-orange rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                            D
+                        </div>
+                        <span class="text-2xl font-bold text-brand-blue tracking-tight">Direct<span class="text-brand-orange">Ghar</span></span>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <div class="flex items-center border border-gray-200 rounded px-2 py-1 hover:bg-gray-50 cursor-pointer">
+                        <span class="text-gray-600 text-sm font-medium"><i class="mr-1">💳</i> Pay Rent</span>
+                    </div>
+
+                    <a href="#" class="px-4 py-2 bg-brand-blue text-white text-sm font-semibold rounded hover:bg-brand-dark transition shadow-md">
+                        For Property Owners
+                    </a>
+
+                    {% if request.user.is_authenticated %}
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" class="text-sm font-semibold text-gray-700 hover:text-brand-blue flex items-center gap-1">
+                                {{ request.user.username }}
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <!-- Dropdown -->
+                            <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg py-1 z-50" style="display: none;">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Dashboard</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="#" class="text-sm font-semibold text-gray-700 hover:text-brand-blue">Sign Up</a>
+                        <a href="#" class="text-sm font-semibold text-gray-700 hover:text-brand-blue">Log In</a>
+                    {% endif %}
+                    
+                    <button class="text-gray-600 hover:text-brand-blue">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT BLOCK -->
+    <main class="flex-grow">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-blue text-white pt-10 pb-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+                <!-- Col 1 -->
+                <div>
+                    <h3 class="font-bold text-lg mb-4 text-brand-orange">DirectGhar</h3>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="#" class="hover:text-white">About Us</a></li>
+                        <li><a href="#" class="hover:text-white">Careers</a></li>
+                        <li><a href="#" class="hover:text-white">Terms & Conditions</a></li>
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <!-- Col 2 -->
+                <div>
+                    <h3 class="font-bold text-lg mb-4 text-white">Services</h3>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="#" class="hover:text-white">Rent</a></li>
+                        <li><a href="#" class="hover:text-white">Buy</a></li>
+                        <li><a href="#" class="hover:text-white">Rental Agreement</a></li>
+                    </ul>
+                </div>
+                <!-- Col 3 -->
+                <div>
+                    <h3 class="font-bold text-lg mb-4 text-white">For Owners</h3>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="#" class="hover:text-white">Post Free Ad</a></li>
+                        <li><a href="#" class="hover:text-white">Owner Support</a></li>
+                        <li><a href="#" class="hover:text-white">Verification Badge</a></li>
+                    </ul>
+                </div>
+                <!-- Col 4 -->
+                <div>
+                    <h3 class="font-bold text-lg mb-4 text-white">Contact Us</h3>
+                    <p class="text-sm text-gray-300 mb-2">support@directghar.com</p>
+                    <div class="flex space-x-4 mt-4">
+                        <!-- Social Icons placeholders -->
+                        <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-brand-orange cursor-pointer transition">F</div>
+                        <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-brand-orange cursor-pointer transition">T</div>
+                        <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-brand-orange cursor-pointer transition">I</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-blue-800 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-xs text-gray-400">© 2025 DirectGhar Technologies Pvt. Ltd. All rights reserved.</p>
+                <div class="flex gap-2 mt-4 md:mt-0">
+                   <!-- Store Buttons styling -->
+                   <div class="bg-gray-900 border border-gray-600 rounded px-2 py-1 text-xs cursor-pointer flex items-center gap-1">
+                        <span>Get it on</span> <strong>Google Play</strong>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
