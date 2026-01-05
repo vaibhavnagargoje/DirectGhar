@@ -23,3 +23,6 @@ def home(request):
     }
 
     return render(request, 'core/index.html', context)
+
+def listings(request):
+    return render(request, 'listings/listings.html')

@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search Results | DirectGhar{% endblock %}
+
+{% block content %}
+
+<!-- TOP BAR: COMPACT SEARCH (Mobile Friendly) -->
+<div class="bg-brand-blue py-4 shadow-md sticky top-16 z-40">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row gap-4 items-center justify-between">
+        <h2 class="text-white text-lg font-medium hidden md:block">
+            Properties in <span class="font-bold border-b border-orange-400">Bangalore</span>
+        </h2>
+        
+        <div class="flex-grow max-w-2xl w-full">
+            <div class="relative">
+                <input type="text" placeholder="Search locality..." class="w-full pl-10 pr-4 py-2 rounded shadow focus:outline-none text-gray-700">
+                <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+        </div>
+        
+        <button class="md:hidden bg-white text-brand-blue px-4 py-2 rounded text-sm font-bold w-full">Filters</button>
+    </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="bg-gray-100 min-h-screen pt-6 pb-12">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
+
+        <!-- LEFT SIDEBAR: FILTERS (Desktop) -->
+        <aside class="hidden md:block col-span-1">
+            <div class="bg-white p-5 rounded-lg shadow sticky top-32">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-gray-700">Filters</h3>
+                    <a href="#" class="text-xs text-brand-orange uppercase font-bold">Reset</a>
+                </div>
+
+                <!-- Filter: BHK Type -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">BHK Type</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-brand-orange focus:ring-brand-orange">
+                            <span class="text-sm text-gray-600">1 BHK</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-brand-orange focus:ring-brand-orange">
+                            <span class="text-sm text-gray-600">2 BHK</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded text-brand-orange focus:ring-brand-orange">
+                            <span class="text-sm text-gray-600">3 BHK</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Filter: Availability -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">Availability</label>
+                    <label class="flex items-center space-x-2 bg-gray-50 p-2 rounded border border-gray-200 cursor-pointer">
+                        <input type="radio" name="availability" checked class="text-brand-orange focus:ring-brand-orange">
+                        <span class="text-sm text-gray-700">Immediately</span>
+                    </label>
+                    <label class="flex items-center space-x-2 bg-gray-50 p-2 rounded border border-gray-200 mt-2 cursor-pointer">
+                        <input type="radio" name="availability" class="text-brand-orange focus:ring-brand-orange">
+                        <span class="text-sm text-gray-700">Within 15 Days</span>
+                    </label>
+                </div>
+
+                <!-- Filter: Tenant Type -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">Preferred Tenant</label>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-brand-blue text-white text-xs rounded-full cursor-pointer">Family</span>
+                        <span class="px-3 py-1 bg-gray-200 text-gray-600 text-xs rounded-full cursor-pointer hover:bg-gray-300">Bachelor</span>
+                        <span class="px-3 py-1 bg-gray-200 text-gray-600 text-xs rounded-full cursor-pointer hover:bg-gray-300">Company</span>
+                    </div>
+                </div>
+
+                <button class="w-full bg-brand-orange text-white py-2 rounded font-semibold shadow hover:bg-orange-600 transition">
+                    Apply Filters
+                </button>
+            </div>
+        </aside>
+
+        <!-- RIGHT COLUMN: PROPERTY CARDS -->
+        <div class="col-span-1 md:col-span-3 space-y-6">
+
+            <!-- Title & Count -->
+            <div class="flex justify-between items-end">
+                <h1 class="text-xl text-gray-700">
+                    <span class="font-bold text-black">15</span> Properties found in Bangalore
+                </h1>
+                
+                <!-- Sort Dropdown -->
+                <select class="border border-gray-300 rounded text-sm p-1 text-gray-600 focus:outline-none">
+                    <option>Relevance</option>
+                    <option>Rent: Low to High</option>
+                    <option>Rent: High to Low</option>
+                    <option>Newest First</option>
+                </select>
+            </div>
+
+            <!-- Loop DUMMY DATA (Normally for property in properties ) -->
+            <!-- Creating a range of 4 to show layout -->
+            {% for i in "1234" %}
+            <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition duration-300 flex flex-col md:flex-row relative">
+                
+                <!-- Zero Brokerage Badge -->
+                <div class="absolute top-0 left-0 bg-brand-orange text-white text-xs font-bold px-2 py-1 z-10 rounded-br">
+                    ZERO BROKERAGE
+                </div>
+
+                <!-- Image Section (35%) -->
+                <div class="md:w-1/3 h-56 md:h-auto relative bg-gray-200">
+                    <!-- Placeholder Image - Replace with prop.image.url -->
+                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" 
+                         alt="Property" 
+                         class="w-full h-full object-cover">
+                    
+                    <div class="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                        <i class="mr-1">📷</i> 8 Photos
+                    </div>
+                </div>
+
+                <!-- Details Section (65%) -->
+                <div class="p-5 flex flex-col justify-between flex-grow">
+                    
+                    <!-- Header -->
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xl font-bold text-brand-blue hover:underline cursor-pointer">
+                                    2 BHK Apartment in Indiranagar
+                                </h3>
+                                <p class="text-sm text-gray-500 mt-1">Independent House, near Metro Station</p>
+                            </div>
+                            <div class="text-right">
+                                <!-- Like Heart -->
+                                <button class="text-gray-400 hover:text-red-500 transition">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Key Specs Grid -->
+                        <div class="bg-gray-50 rounded-lg p-3 mt-4 grid grid-cols-3 divide-x divide-gray-200 border border-gray-100">
+                            <div class="text-center px-2">
+                                <div class="text-xs text-gray-500">Rent</div>
+                                <div class="font-bold text-gray-800">₹ 25,000</div>
+                            </div>
+                            <div class="text-center px-2">
+                                <div class="text-xs text-gray-500">Deposit</div>
+                                <div class="font-bold text-gray-800">₹ 1.5 Lacs</div>
+                            </div>
+                            <div class="text-center px-2">
+                                <div class="text-xs text-gray-500">Builtup</div>
+                                <div class="font-bold text-gray-800">1200 sqft</div>
+                            </div>
+                        </div>
+
+                        <!-- Chips / Features -->
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">Semi Furnished</span>
+                            <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">Family / Bachelor</span>
+                            <span class="px-2 py-1 bg-green-50 text-green-700 text-xs rounded border border-green-200">Immediate</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer / CTA -->
+                    <div class="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
+                        <div class="flex items-center gap-2">
+                            <!-- User Avatar Placeholder -->
+                            <div class="w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center text-white text-xs font-bold">VS</div>
+                            <div class="flex flex-col">
+                                <span class="text-xs font-semibold text-gray-800">Owner (Vaibhav)</span>
+                                <span class="text-[10px] text-gray-400">Posted 2 days ago</span>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="flex gap-3">
+                            <button class="px-4 py-2 border border-brand-blue text-brand-blue font-semibold text-sm rounded hover:bg-blue-50 transition">
+                                View Details
+                            </button>
+                            <button class="px-4 py-2 bg-brand-orange text-white font-bold text-sm rounded shadow-md hover:bg-orange-600 transition flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                                Contact Owner
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+             {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
