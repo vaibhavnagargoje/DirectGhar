@@ -124,3 +124,12 @@ class CustomUser(AbstractUser):
         if self.get_full_name():
             return self.get_full_name()
         return self.username
+
+class OTPRequest(models.Model):
+    phone_number = models.CharField(max_length=17)
+    otp_code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.phone_number} - {self.otp_code}"

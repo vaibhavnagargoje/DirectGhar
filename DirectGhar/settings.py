@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +28,7 @@ SECRET_KEY = 'django-insecure-j2=t6l$@o@fsy9!zn&!i%c)0tx#9lr81ol4iikb13%)-&#n_d^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [' https://1163fcf6f5e2.ngrok-free.app','1163fcf6f5e2.ngrok-free.app','localhost', '127.0.0.1']
 
 
 # Application definition
@@ -53,6 +56,9 @@ INSTALLED_APPS = [
     'apps.core',
 ]
 
+#csrf allowd hosts form other origins
+CSRF_TRUSTED_ORIGINS = ['https://1163fcf6f5e2.ngrok-free.app','http://1163fcf6f5e2.ngrok-free.app']
+
 TAILWIND_APP_NAME = "theme"
 
 AUTH_USER_MODEL = "users.CustomUser"
@@ -67,6 +73,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+AUTHENTICATION_BACKENDS = [
+    'apps.users.backends.EmailOrUsernameModelBackend', # Your new backend
+    'django.contrib.auth.backends.ModelBackend',       # Fallback
+]
 ROOT_URLCONF = 'DirectGhar.urls'
 
 TEMPLATES = [
@@ -90,12 +101,41 @@ WSGI_APPLICATION = 'DirectGhar.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+
+if DEBUG:
+    
+    DATABASES = {  
+        'default': {  
+            'ENGINE': 'django.db.backends.mysql',  
+            'NAME': 'directghar',  
+            'USER': 'root',  
+            'PASSWORD': '8806',  
+            'HOST': '127.0.0.1',  
+            'PORT': '3306',  
+            'OPTIONS': {  
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
+            }          
+        }  
+    }  
+
+
+
+else:
+    DATABASES = {  
+        'default': {  
+            'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.mysql'),
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+            'PORT': os.getenv('DB_PORT', '3306'),
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+            }           
+        }  
+    }  
+
+
 
 
 # Password validation
@@ -133,3 +173,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
