@@ -1,13 +1,17 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import PropertyForm
-from .models import PropertyImage
+from .models import Property, PropertyImage
 
 
 def listings(request):
-    return render(request, 'listings/listings.html')
+    properties = Property.objects.filter(status='active', is_active=True).order_by('-created_at')
+    return render(request, 'listings/listings.html', {'properties': properties})
 
+def property_detail(request, id):
+    property_obj = get_object_or_404(Property, id=id)
+    return render(request, 'listings/property_detail.html', {'property': property_obj})
 
 @login_required(login_url='login')
 def create_listing(request):

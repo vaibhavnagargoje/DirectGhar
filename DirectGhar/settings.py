@@ -106,15 +106,13 @@ if DEBUG:
     
     DATABASES = {  
         'default': {  
-            'ENGINE': 'django.db.backends.mysql',  
+            'ENGINE': 'django.db.backends.postgresql',  
             'NAME': 'directghar',  
-            'USER': 'root',  
-            'PASSWORD': '8806',  
-            'HOST': '127.0.0.1',  
-            'PORT': '3306',  
-            'OPTIONS': {  
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
-            }          
+            'USER': 'postgres',  
+            'PASSWORD': 'Kajal@1234',  
+            'HOST': 'localhost',  
+            'PORT': '5432',  
+                
         }  
     }  
 
@@ -123,15 +121,13 @@ if DEBUG:
 else:
     DATABASES = {  
         'default': {  
-            'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.mysql'),
+            'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
             'NAME': os.getenv('DB_NAME'),
             'USER': os.getenv('DB_USER'),
             'PASSWORD': os.getenv('DB_PASSWORD'),
-            'HOST': os.getenv('DB_HOST', '127.0.0.1'),
-            'PORT': os.getenv('DB_PORT', '3306'),
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-            }           
+            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+                   
         }  
     }  
 
