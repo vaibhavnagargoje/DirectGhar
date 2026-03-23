@@ -112,6 +112,10 @@ if DEBUG:
             'PASSWORD': 'Kajal@1234',  
             'HOST': 'localhost',  
             'PORT': '5432',  
+<<<<<<< HEAD
+=======
+                
+>>>>>>> main
         }  
     }  
 
@@ -126,9 +130,13 @@ else:
             'PASSWORD': os.getenv('DB_PASSWORD'),
             'HOST': os.getenv('DB_HOST', 'localhost'),
             'PORT': os.getenv('DB_PORT', '5432'),
+<<<<<<< HEAD
             'OPTIONS': {
                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
             }           
+=======
+                   
+>>>>>>> main
         }  
     }  
 
