@@ -8,7 +8,6 @@ from django.views.decorators.http import require_POST
 from datetime import timedelta
 
 from .forms import PropertyForm
-<<<<<<< HEAD
 from .models import Property, PropertyImage, SavedSearch
 
 
@@ -181,14 +180,6 @@ def listings(request):
         return render(request, 'listings/partials/results.html', context)
 
     return render(request, 'listings/listings.html', context)
-=======
-from .models import Property, PropertyImage
-
-
-def listings(request):
-    properties = Property.objects.filter(status='active', is_active=True).order_by('-created_at')
-    return render(request, 'listings/listings.html', {'properties': properties})
->>>>>>> main
 
 def property_detail(request, id):
     property_obj = get_object_or_404(Property, id=id)
