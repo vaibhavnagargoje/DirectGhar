@@ -59,6 +59,28 @@ class Property(models.Model):
         ('flagged', 'Flagged (Broker Suspected)'),
     )
 
+    FLOOR_CHOICES = (
+        ('ground', 'Ground Floor'),
+        ('1_3', '1 to 3'),
+        ('4_6', '4 to 6'),
+        ('7_9', '7 to 9'),
+        ('10_plus', '10 & above'),
+    )
+
+    BATHROOM_CHOICES = (
+        (1, '1'),
+        (2, '2'),
+        (3, '3+'),
+    )
+
+    PROPERTY_AGE_CHOICES = (
+        ('lt1', 'Less than 1 year'),
+        ('lt3', 'Less than 3 years'),
+        ('lt5', 'Less than 5 years'),
+        ('lt10', 'Less than 10 years'),
+        ('gt10', 'Over 10 years'),
+    )
+
     # --- IDENTIFICATION ---
     # UUID prevents ID guessing (Scraping Protection)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -84,6 +106,16 @@ class Property(models.Model):
     maintenance_cost = models.DecimalField(max_digits=8, decimal_places=2, default=0, help_text="0 if included in rent")
     is_negotiable = models.BooleanField(default=False)
 
+    # --- PROPERTY DETAILS ---
+    builtup_area = models.PositiveIntegerField(null=True, blank=True, help_text="Built-up area in sq. ft.")
+    bathrooms = models.PositiveSmallIntegerField(choices=BATHROOM_CHOICES, null=True, blank=True)
+    floor_number = models.CharField(max_length=10, choices=FLOOR_CHOICES, blank=True, default='')
+    total_floors = models.PositiveSmallIntegerField(null=True, blank=True, help_text="Total floors in the building")
+    property_age = models.CharField(max_length=10, choices=PROPERTY_AGE_CHOICES, blank=True, default='')
+    has_parking_2w = models.BooleanField(default=False, help_text="2-wheeler parking available")
+    has_parking_4w = models.BooleanField(default=False, help_text="4-wheeler parking available")
+    non_veg_allowed = models.BooleanField(default=True)
+    
     # --- LOCATION ---
     address = models.CharField(max_length=255)
     locality = models.CharField(max_length=100, help_text="e.g. Koramangala, Whitefield")
@@ -167,3 +199,22 @@ class PropertyImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.property.title}"
+
+# --- 4. SAVED SEARCH MODEL ---
+class SavedSearch(models.Model):
+    """Stores a user's named filter criteria for quick re-use."""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='saved_searches'
+    )
+    label = models.CharField(max_length=120, help_text="e.g. '2BHK in Pune below 25k'")
+    query_string = models.TextField(help_text="Raw URL query string, e.g. bhk=2bhk&city=pune&rent_max=25000")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name_plural = "Saved Searches"
+
+    def __str__(self):
+        return f"{self.label} ({self.user.username})"
