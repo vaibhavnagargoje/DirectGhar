@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Property, Amenity, PropertyImage
+from .models import Property, Amenity, PropertyImage, SavedSearch
 
 # Inline allows you to upload photos DIRECTLY inside the Property page
 class PropertyImageInline(admin.TabularInline):
@@ -30,7 +30,9 @@ class PropertyAdmin(admin.ModelAdmin):
             "fields": ('title', 'owner', 'slug', 'description')
         }),
         ("Specifications", {
-            "fields": ('property_type', 'bhk_type', 'furnishing_status', 'amenities')
+            "fields": ('property_type', 'bhk_type', 'furnishing_status', 'amenities',
+                       'builtup_area', 'bathrooms', 'floor_number', 'total_floors', 'property_age',
+                       'has_parking_2w', 'has_parking_4w', 'non_veg_allowed')
         }),
         ("Financials", {
             "fields": ('rent_amount', 'deposit_amount', 'maintenance_cost', 'is_negotiable')
@@ -46,3 +48,8 @@ class PropertyAdmin(admin.ModelAdmin):
 @admin.register(Amenity)
 class AmenityAdmin(admin.ModelAdmin):
     list_display = ('name', 'icon_class')
+@admin.register(SavedSearch)
+class SavedSearchAdmin(admin.ModelAdmin):
+    list_display = ('label', 'user', 'created_at')
+    search_fields = ('label', 'user__email')
+    readonly_fields = ('created_at', 'query_string')

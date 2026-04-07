@@ -1,192 +1,222 @@
-<!-- templates/core/index.html -->
+﻿<!-- templates/core/index.html -->
 {% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
 
 <!-- HERO SECTION -->
-<div class="relative bg-white pt-10 pb-16">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        
-        <h1 class="text-3xl md:text-4xl font-normal text-gray-700 mb-2">
-            World's Largest <span class="font-bold text-brand-blue">Broker-Free</span> Property Site
-        </h1>
-        
-        <!-- Feature Pills -->
-        <div class="flex justify-center gap-4 mb-8 text-sm text-gray-600 mt-4">
-            <span class="bg-orange-50 text-brand-orange px-3 py-1 rounded-md border border-orange-100 flex items-center gap-1">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Rental Agreement
-            </span>
-            <span class="bg-orange-50 text-brand-orange px-3 py-1 rounded-md border border-orange-100 flex items-center gap-1">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                Next Day Delivery
-            </span>
-        </div>
+<div class="relative bg-gradient-to-br from-slate-50 to-blue-50 pt-10 pb-16">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
 
-        <!-- SEARCH CONTAINER BOX -->
-        <div class="bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden text-left">
-            
-            <!-- Tabs -->
-            <div class="flex border-b border-gray-200" id="propertyTabs">
-                <button type="button" data-tab="buy" class="tab-btn px-8 py-3 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none transition-colors">Buy</button>
-                <button type="button" data-tab="rent" class="tab-btn px-8 py-3 text-sm font-medium text-brand-orange border-b-2 border-brand-orange bg-white focus:outline-none transition-colors">Rent</button>
-                <button type="button" data-tab="commercial" class="tab-btn px-8 py-3 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none transition-colors">Commercial</button>
-            </div>
+    <h1 class="text-3xl md:text-4xl font-normal text-gray-700 mb-2">
+      World's Largest <span class="font-bold text-brand-blue">Broker-Free</span> Property Site
+    </h1>
 
-            <!-- Search Inputs -->
-            <form action="{% url 'listings' %}" method="GET" class="p-4 md:p-6 bg-white">
-                <input type="hidden" name="listing_type" id="listingType" value="rent">
-                <input type="hidden" name="location" id="locationInput" value="">
-                
-                <div class="flex flex-col md:flex-row gap-2 md:gap-0 md:border md:border-gray-300 md:rounded-md">
-                    
-                    <!-- Location Button -->
-                    <div class="md:border-r md:border-gray-300 flex items-center">
-                        <button type="button" id="getLocationBtn" class="h-12 px-4 flex items-center gap-2 text-gray-600 hover:text-brand-orange transition-colors focus:outline-none" title="Get current location">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
-                            <span id="locationText" class="text-sm hidden md:inline">Use location</span>
-                        </button>
-                    </div>
-
-                    <!-- Search Bar Text -->
-                    <div class="flex-grow">
-                        <input type="text" name="q" placeholder="Search by locality or landmark..." class="w-full h-12 pl-4 text-gray-700 focus:outline-none" />
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="md:w-1/4">
-                        <button type="submit" class="w-full h-12 bg-brand-orange text-white font-bold text-lg hover:bg-orange-600 transition flex items-center justify-center gap-2 md:rounded-r-sm">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                            Search
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Radio Options -->
-                <div class="flex gap-6 mt-4 pl-1">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="type" class="text-brand-orange focus:ring-brand-orange h-4 w-4" checked>
-                        <span class="text-sm text-gray-700">Full House</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="type" class="text-brand-orange focus:ring-brand-orange h-4 w-4">
-                        <span class="text-sm text-gray-700">PG/Hostel</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="type" class="text-brand-orange focus:ring-brand-orange h-4 w-4">
-                        <span class="text-sm text-gray-700">Flatmates</span>
-                    </label>
-                </div>
-            </form>
-        </div>
-
-        <!-- POST AD CTA -->
-        <div class="mt-12">
-            <div class="relative flex py-5 items-center">
-                <div class="flex-grow border-t border-gray-200"></div>
-                <span class="flex-shrink-0 mx-4 text-gray-500 text-sm">Are you a Property Owner?</span>
-                <div class="flex-grow border-t border-gray-200"></div>
-            </div>
-            
-            <a href="{% url 'post_property' %}" class="inline-block px-8 py-3 bg-brand-blue text-white font-medium text-sm rounded shadow-md hover:bg-brand-dark transition transform hover:-translate-y-0.5">
-                Post Free Property Ad
-            </a>
-        </div>
+    <!-- Feature Pills -->
+    <div class="flex justify-center gap-3 mb-8 text-sm text-gray-600 mt-4 flex-wrap">
+      <span class="bg-orange-50 text-brand-orange px-3 py-1 rounded-md border border-orange-100 flex items-center gap-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Rental Agreement
+      </span>
+      <span class="bg-orange-50 text-brand-orange px-3 py-1 rounded-md border border-orange-100 flex items-center gap-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Packers &amp; Movers
+      </span>
+      <span class="bg-orange-50 text-brand-orange px-3 py-1 rounded-md border border-orange-100 flex items-center gap-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Lowest Prices
+      </span>
     </div>
+
+    <!-- SEARCH CARD -->
+    <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden text-left"
+         x-data="searchWidget()" x-init="init()">
+
+      <!-- Tabs -->
+      <div class="flex border-b border-gray-200">
+        <button @click="tab='rent'"
+                :class="tab==='rent' ? 'border-b-2 border-brand-orange text-brand-orange font-semibold' : 'text-gray-500 hover:bg-gray-50'"
+                class="px-8 py-3 text-sm focus:outline-none transition">
+          Rent
+        </button>
+        <button @click="tab='buy'"
+                :class="tab==='buy' ? 'border-b-2 border-brand-orange text-brand-orange font-semibold' : 'text-gray-500 hover:bg-gray-50'"
+                class="px-8 py-3 text-sm focus:outline-none transition">
+          Buy
+        </button>
+        <button @click="tab='commercial'"
+                :class="tab==='commercial' ? 'border-b-2 border-brand-orange text-brand-orange font-semibold' : 'text-gray-500 hover:bg-gray-50'"
+                class="px-8 py-3 text-sm focus:outline-none transition">
+          Commercial
+        </button>
+      </div>
+
+      <!-- Search Form -->
+      <form action="{% url 'listings' %}" method="GET" class="p-5 md:p-6" @submit="prepareForm">
+
+        <!-- Row 1: City + Locality input + Search button -->
+        <div class="flex flex-col md:flex-row gap-2 md:gap-0 border border-gray-300 rounded-md overflow-hidden md:h-12">
+
+          <!-- City Select -->
+          <div class="relative md:w-44 border-b md:border-b-0 md:border-r border-gray-300 flex-shrink-0">
+            <select name="city" class="w-full h-12 pl-3 pr-7 text-gray-700 bg-white appearance-none focus:outline-none cursor-pointer text-sm">
+              <option value="pune">Pune</option>
+              <option value="bangalore">Bangalore</option>
+              <option value="mumbai">Mumbai</option>
+              <option value="delhi">Delhi</option>
+              <option value="hyderabad">Hyderabad</option>
+              <option value="chennai">Chennai</option>
+            </select>
+            <div class="absolute right-2 top-3.5 pointer-events-none">
+              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+          </div>
+
+          <!-- Locality Multi-Tag Input -->
+          <div class="flex-grow flex items-center flex-wrap gap-1 px-3 py-1 min-h-[48px] cursor-text"
+               @click="$refs.localityInput.focus()">
+            <!-- Locality chips -->
+            <template x-for="(loc, idx) in localities" :key="idx">
+              <span class="flex items-center gap-1 bg-teal-600 text-white text-xs px-2 py-1 rounded-full">
+                <span x-text="loc"></span>
+                <button type="button" @click.stop="removeLocality(idx)"
+                        class="hover:text-red-200 focus:outline-none leading-none">&times;</button>
+              </span>
+            </template>
+            <input x-ref="localityInput"
+                   type="text"
+                   x-model="localityInput"
+                   @keydown.enter.prevent="addLocality"
+                   @keydown.comma.prevent="addLocality"
+                   :placeholder="localities.length === 0 ? 'Search locality or landmark...' : 'Add more...'"
+                   class="flex-grow min-w-[140px] h-8 text-sm text-gray-700 focus:outline-none bg-transparent" />
+            <!-- Hidden inputs for form submission -->
+            <template x-for="loc in localities" :key="loc">
+              <input type="hidden" name="q" :value="loc">
+            </template>
+          </div>
+
+          <!-- Search Button -->
+          <button type="submit"
+                  class="h-12 px-6 bg-brand-orange text-white font-bold text-sm hover:bg-orange-600 transition flex items-center justify-center gap-2 flex-shrink-0 md:rounded-r-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            Search
+          </button>
+        </div>
+
+        <!-- Row 2: Property sub-type + BHK -->
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-4 pl-1">
+          <!-- Radio: Full House / PG / Flatmates -->
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="type" value="full_house"
+                   class="accent-brand-orange h-4 w-4" checked>
+            <span class="text-sm text-gray-700">Full House</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="type" value="pg"
+                   class="accent-brand-orange h-4 w-4">
+            <span class="text-sm text-gray-700">PG/Hostel</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="type" value="flatmates"
+                   class="accent-brand-orange h-4 w-4">
+            <span class="text-sm text-gray-700">Flatmates</span>
+          </label>
+
+          <!-- Divider -->
+          <div class="hidden md:block w-px h-5 bg-gray-300"></div>
+
+          <!-- BHK Dropdown -->
+          <div class="relative">
+            <select name="bhk" class="appearance-none border border-gray-300 rounded px-3 pr-7 py-1.5 text-sm text-gray-600 focus:outline-none focus:border-brand-orange bg-white">
+              <option value="">BHK Type</option>
+              <option value="1rk">1 RK</option>
+              <option value="1bhk">1 BHK</option>
+              <option value="2bhk">2 BHK</option>
+              <option value="3bhk">3 BHK</option>
+              <option value="4bhk">4 BHK</option>
+              <option value="4plus">5+ BHK</option>
+            </select>
+            <div class="absolute right-2 top-2 pointer-events-none">
+              <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- POST AD CTA -->
+    <div class="mt-12">
+      <div class="relative flex py-5 items-center">
+        <div class="flex-grow border-t border-gray-200"></div>
+        <span class="flex-shrink-0 mx-4 text-gray-500 text-sm">Are you a Property Owner?</span>
+        <div class="flex-grow border-t border-gray-200"></div>
+      </div>
+      <a href="{% url 'post_property' %}"
+         class="inline-block px-8 py-3 bg-brand-blue text-white font-medium text-sm rounded shadow-md hover:bg-brand-dark transition transform hover:-translate-y-0.5">
+        Post Free Property Ad
+      </a>
+    </div>
+  </div>
 </div>
 
-<!-- VALUE PROPOSITION BAR (Grey Background) -->
+<!-- VALUE PROPOSITION BAR -->
 <div class="bg-gray-100 py-6 border-t border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 flex justify-around text-center overflow-x-auto">
-        
-        <div class="flex flex-col items-center min-w-[100px]">
-            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 text-brand-orange">
-                ₹
-            </div>
-            <span class="text-xs font-semibold text-gray-700">Lowest Price</span>
-        </div>
-
-        <div class="flex flex-col items-center min-w-[100px]">
-            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 text-brand-orange">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"></path></svg>
-            </div>
-            <span class="text-xs font-semibold text-gray-700">New Offers</span>
-        </div>
-
-        <div class="flex flex-col items-center min-w-[100px]">
-            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 text-brand-orange">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            </div>
-            <span class="text-xs font-semibold text-gray-700">Save Brokerage</span>
-        </div>
-
-        <div class="flex flex-col items-center min-w-[100px]">
-             <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 text-brand-orange">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-            </div>
-            <span class="text-xs font-semibold text-gray-700">100% Verified</span>
-        </div>
-
+  <div class="max-w-7xl mx-auto px-4 flex justify-around text-center overflow-x-auto gap-4">
+    {% for item in value_props %}
+    <div class="flex flex-col items-center min-w-[100px]">
+      <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 text-brand-orange text-xl">
+        {{ item.icon }}
+      </div>
+      <span class="text-xs font-semibold text-gray-700">{{ item.label }}</span>
     </div>
+    {% empty %}
+    <div class="flex flex-col items-center min-w-[100px]">
+      <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 text-brand-orange">â‚¹</div>
+      <span class="text-xs font-semibold text-gray-700">Lowest Price</span>
+    </div>
+    <div class="flex flex-col items-center min-w-[100px]">
+      <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 text-brand-orange">âœ…</div>
+      <span class="text-xs font-semibold text-gray-700">100% Verified</span>
+    </div>
+    <div class="flex flex-col items-center min-w-[100px]">
+      <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 text-brand-orange">ðŸ </div>
+      <span class="text-xs font-semibold text-gray-700">Zero Brokerage</span>
+    </div>
+    <div class="flex flex-col items-center min-w-[100px]">
+      <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-2 text-brand-orange">âš¡</div>
+      <span class="text-xs font-semibold text-gray-700">Next Day Delivery</span>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 
+<!-- Alpine.js Widget Logic -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Tab switching functionality
-    const tabs = document.querySelectorAll('.tab-btn');
-    const listingTypeInput = document.getElementById('listingType');
-    
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            // Remove active styles from all tabs
-            tabs.forEach(t => {
-                t.classList.remove('text-brand-orange', 'border-b-2', 'border-brand-orange', 'bg-white');
-                t.classList.add('text-gray-500');
-            });
-            
-            // Add active styles to clicked tab
-            this.classList.remove('text-gray-500');
-            this.classList.add('text-brand-orange', 'border-b-2', 'border-brand-orange', 'bg-white');
-            
-            // Update hidden input value
-            listingTypeInput.value = this.dataset.tab;
-        });
-    });
-    
-    // Location button functionality
-    const getLocationBtn = document.getElementById('getLocationBtn');
-    const locationText = document.getElementById('locationText');
-    const locationInput = document.getElementById('locationInput');
-    
-    getLocationBtn.addEventListener('click', function() {
-        if (navigator.geolocation) {
-            locationText.textContent = 'Getting...';
-            getLocationBtn.classList.add('text-brand-orange');
-            
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    locationInput.value = lat + ',' + lng;
-                    locationText.textContent = 'Location set';
-                    getLocationBtn.classList.add('text-green-500');
-                    getLocationBtn.classList.remove('text-brand-orange');
-                },
-                function(error) {
-                    locationText.textContent = 'Use location';
-                    getLocationBtn.classList.remove('text-brand-orange');
-                    alert('Unable to get location. Please allow location access.');
-                }
-            );
-        } else {
-            alert('Geolocation is not supported by your browser.');
-        }
-    });
-});
+function searchWidget() {
+  return {
+    tab: 'rent',
+    localities: [],
+    localityInput: '',
+    init() {},
+    addLocality() {
+      const val = this.localityInput.trim().replace(/,$/, '');
+      if (val && !this.localities.includes(val) && this.localities.length < 3) {
+        this.localities.push(val);
+      }
+      this.localityInput = '';
+    },
+    removeLocality(idx) {
+      this.localities.splice(idx, 1);
+    },
+    prepareForm(e) {
+      // If user typed but didn't press enter, add it now
+      if (this.localityInput.trim()) {
+        this.addLocality();
+      }
+    }
+  }
+}
 </script>
 
 {% endblock %}

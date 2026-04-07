@@ -10,6 +10,8 @@ class PropertyForm(forms.ModelForm):
             'title', 'description', 'property_type', 'bhk_type', 
             'furnishing_status', 'preferred_tenants',
             'rent_amount', 'deposit_amount', 'maintenance_cost', 'is_negotiable',
+            'builtup_area', 'bathrooms', 'floor_number', 'total_floors', 'property_age',
+            'has_parking_2w', 'has_parking_4w', 'non_veg_allowed',
             'address', 'locality', 'city', 'state', 'pincode',
             'amenities', 'available_from'
         ]
