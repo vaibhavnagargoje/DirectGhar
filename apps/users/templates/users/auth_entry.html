@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login / Sign Up | DirectGhar{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full bg-white rounded-md shadow-xl border border-gray-100 overflow-hidden">
+        
+        <!-- Header -->
+        <div class="p-8 pb-4 text-center">
+            <div class="w-12 h-12 bg-brand-orange text-white text-2xl font-bold rounded-sm flex items-center justify-center mx-auto mb-4">
+                D
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800">Login / Sign Up</h2>
+            <p class="text-gray-500 text-sm mt-1">Enter your mobile number to get started</p>
+        </div>
+
+        <!-- Form -->
+        <div class="px-8 pb-8 pt-2">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mb-4 p-2 text-center text-sm rounded bg-red-50 text-red-600 border border-red-200">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="relative">
+                    <!-- +91 Indicator -->
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="text-gray-500 font-bold border-r border-gray-300 pr-2 py-1 text-sm">+91</span>
+                    </div>
+                    <!-- Phone Field (Defined in Forms.py) -->
+                    {{ form.phone_number }}
+                    
+                    {% if form.phone_number.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ form.phone_number.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-sm text-white bg-brand-blue hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue transition shadow-sm transform hover:-translate-y-0.5">
+                    Continue
+                </button>
+            </form>
+            
+            <p class="text-xs text-center text-gray-400 mt-6">
+                By clicking continue, you agree to our <a href="#" class="underline">Terms</a> and <a href="#" class="underline">Privacy Policy</a>.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

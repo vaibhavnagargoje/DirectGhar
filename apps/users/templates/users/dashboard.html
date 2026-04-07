@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+{% block title %}My Dashboard | DirectGhar{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+    
+    <!-- 1. LEFT SIDEBAR -->
+    <aside class="w-full md:w-64 bg-white border-r border-gray-200 md:min-h-screen">
+        <div class="p-6 text-center border-b border-gray-100">
+            <!-- User Avatar -->
+            <div class="w-20 h-20 rounded-full bg-brand-blue mx-auto flex items-center justify-center text-white text-2xl font-bold mb-3 shadow-lg ring-4 ring-blue-50">
+                {% if request.user.profile_picture %}
+                    <img src="{{ request.user.profile_picture.url }}" class="w-full h-full rounded-full object-cover">
+                {% else %}
+                    {{ request.user.username|make_list|first|upper }}
+                {% endif %}
+            </div>
+            <h2 class="font-bold text-gray-800">{{ request.user.get_full_name|default:request.user.username }}</h2>
+            <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold mt-1">
+                {{ request.user.get_user_type_display }}
+            </p>
+        </div>
+
+        <nav class="p-4 space-y-2">
+            <a href="{% url 'dashboard' %}" class="flex items-center gap-3 px-4 py-3 bg-blue-50 text-brand-blue font-semibold rounded-lg">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                Dashboard
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                My Properties
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                Messages 
+                <span class="ml-auto bg-brand-orange text-white text-xs px-2 py-0.5 rounded-full">{{ stats.messages_received }}</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                Profile Settings
+            </a>
+        </nav>
+    </aside>
+
+    <!-- 2. MAIN DASHBOARD CONTENT -->
+    <main class="flex-grow p-6 lg:p-10">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Overview</h1>
+                <p class="text-sm text-gray-500">Welcome back, here is what's happening with your account.</p>
+            </div>
+            
+            {% if request.user.user_type == 'owner' %}
+            <a href="{% url 'post_property' %}" class="bg-brand-orange hover:bg-orange-600 text-white px-5 py-2.5 rounded shadow-lg font-semibold flex items-center gap-2 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Post New Property
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Verification Banner (Verification Logic) -->
+        {% if not request.user.is_verified_owner and request.user.user_type == 'owner' %}
+        <div class="bg-blue-900 text-white rounded-lg p-6 mb-8 flex flex-col md:flex-row items-center justify-between shadow-xl bg-opacity-90 backdrop-blur">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg">Get Verified & Get 3x More Leads!</h3>
+                    <p class="text-blue-100 text-sm">Upload your utility bill to get the "Verified Owner" badge. Tenants trust verified listings more.</p>
+                </div>
+            </div>
+            <button class="mt-4 md:mt-0 px-6 py-2 bg-white text-brand-blue font-bold rounded shadow hover:bg-gray-100 transition whitespace-nowrap">
+                Verify Now
+            </button>
+        </div>
+        {% endif %}
+
+        <!-- STATS GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Card 1 -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Properties</p>
+                        <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ stats.total_listings }}</h3>
+                    </div>
+                    <div class="p-2 bg-blue-50 text-brand-blue rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Active Listings</p>
+                        <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ stats.active_listings }}</h3>
+                    </div>
+                    <div class="p-2 bg-green-50 text-green-600 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Views</p>
+                        <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ stats.total_views }}</h3>
+                    </div>
+                    <div class="p-2 bg-orange-50 text-brand-orange rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Interested Tenants</p>
+                        <h3 class="text-3xl font-bold text-gray-800 mt-2">{{ stats.messages_received }}</h3>
+                    </div>
+                    <div class="p-2 bg-purple-50 text-purple-600 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECENT ACTIVITY TABLE -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="font-bold text-gray-800 text-lg">My Recent Properties</h3>
+                <a href="#" class="text-sm text-brand-blue hover:underline">View All</a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-gray-50 text-gray-600 text-xs uppercase tracking-wider">
+                            <th class="px-6 py-4 font-semibold">Property</th>
+                            <th class="px-6 py-4 font-semibold">Rent</th>
+                            <th class="px-6 py-4 font-semibold text-center">Views</th>
+                            <th class="px-6 py-4 font-semibold text-center">Status</th>
+                            <th class="px-6 py-4 font-semibold text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        {% for prop in recent_properties %}
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-lg bg-gray-200 overflow-hidden">
+                                        <!-- Check for real image or dummy -->
+                                        {% if use_dummy %}
+                                            <img src="{{ prop.dummy_image }}" class="w-full h-full object-cover">
+                                        {% else %}
+                                            {% if prop.images.exists %}
+                                                <img src="{{ prop.images.first.image.url }}" class="w-full h-full object-cover">
+                                            {% else %}
+                                                <div class="w-full h-full bg-gray-300 flex items-center justify-center text-xs">No Img</div>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-gray-800 text-sm">{{ prop.title }}</div>
+                                        <div class="text-xs text-gray-500">{{ prop.location|default:prop.city }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-800">
+                                ₹ {{ prop.rent_amount }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-blue-50 text-blue-700 py-1 px-3 rounded-full text-xs font-bold">{{ prop.view_count }}</span>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {% if prop.status == 'active' %}
+                                    <span class="inline-flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
+                                        <span class="w-2 h-2 rounded-full bg-green-500"></span> Active
+                                    </span>
+                                {% else %}
+                                    <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-medium">
+                                        {{ prop.status|title }}
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <button class="text-gray-400 hover:text-brand-blue mx-1" title="Edit">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                </button>
+                                <button class="text-gray-400 hover:text-red-500 mx-1" title="Delete">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if recent_properties|length == 0 and not use_dummy %}
+                <div class="text-center py-10">
+                    <div class="text-gray-400 text-5xl mb-3">🏚️</div>
+                    <p class="text-gray-500">You haven't posted any properties yet.</p>
+                </div>
+            {% endif %}
+        </div>
+
+    </main>
+</div>
+{% endblock %}
