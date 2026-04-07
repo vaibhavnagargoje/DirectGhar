@@ -105,7 +105,7 @@ WSGI_APPLICATION = 'DirectGhar.wsgi.application'
 if DEBUG:
     
     
-     DATABASES = {  
+    DATABASES = {  
         'default': {  
             'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
             'NAME': os.getenv('DB_NAME', 'directghar'),
@@ -113,9 +113,6 @@ if DEBUG:
             'PASSWORD': os.getenv('DB_PASSWORD', 'Kajal@1234'),
             'HOST': os.getenv('DB_HOST', '127.0.0.1'),
             'PORT': os.getenv('DB_PORT', '5432'),
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-            }           
         }  
     }  
 
