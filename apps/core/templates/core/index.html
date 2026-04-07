@@ -28,31 +28,32 @@
         <div class="bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden text-left">
             
             <!-- Tabs -->
-            <div class="flex border-b border-gray-200">
-                <button class="px-8 py-3 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none">Buy</button>
-                <button class="px-8 py-3 text-sm font-medium text-brand-orange border-b-2 border-brand-orange bg-white focus:outline-none">Rent</button>
-                <button class="px-8 py-3 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none">Commercial</button>
+            <div class="flex border-b border-gray-200" id="propertyTabs">
+                <button type="button" data-tab="buy" class="tab-btn px-8 py-3 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none transition-colors">Buy</button>
+                <button type="button" data-tab="rent" class="tab-btn px-8 py-3 text-sm font-medium text-brand-orange border-b-2 border-brand-orange bg-white focus:outline-none transition-colors">Rent</button>
+                <button type="button" data-tab="commercial" class="tab-btn px-8 py-3 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none transition-colors">Commercial</button>
             </div>
 
             <!-- Search Inputs -->
             <form action="{% url 'listings' %}" method="GET" class="p-4 md:p-6 bg-white">
+                <input type="hidden" name="listing_type" id="listingType" value="rent">
+                <input type="hidden" name="location" id="locationInput" value="">
+                
                 <div class="flex flex-col md:flex-row gap-2 md:gap-0 md:border md:border-gray-300 md:rounded-md">
                     
-                    <!-- City Select (Styled to look merged) -->
-                    <div class="relative md:w-1/4 md:border-r md:border-gray-300">
-                        <select name="city" class="w-full appearance-none h-12 pl-4 pr-8 text-gray-700 bg-transparent focus:outline-none cursor-pointer">
-                            <option value="bangalore">Bangalore</option>
-                            <option value="mumbai">Mumbai</option>
-                            <option value="pune">Pune</option>
-                            <option value="delhi">Delhi</option>
-                        </select>
-                        <div class="absolute right-3 top-3 pointer-events-none">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </div>
+                    <!-- Location Button -->
+                    <div class="md:border-r md:border-gray-300 flex items-center">
+                        <button type="button" id="getLocationBtn" class="h-12 px-4 flex items-center gap-2 text-gray-600 hover:text-brand-orange transition-colors focus:outline-none" title="Get current location">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span id="locationText" class="text-sm hidden md:inline">Use location</span>
+                        </button>
                     </div>
 
                     <!-- Search Bar Text -->
-                    <div class="flex-grow md:w-2/4">
+                    <div class="flex-grow">
                         <input type="text" name="q" placeholder="Search by locality or landmark..." class="w-full h-12 pl-4 text-gray-700 focus:outline-none" />
                     </div>
 
@@ -132,5 +133,60 @@
 
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab switching functionality
+    const tabs = document.querySelectorAll('.tab-btn');
+    const listingTypeInput = document.getElementById('listingType');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remove active styles from all tabs
+            tabs.forEach(t => {
+                t.classList.remove('text-brand-orange', 'border-b-2', 'border-brand-orange', 'bg-white');
+                t.classList.add('text-gray-500');
+            });
+            
+            // Add active styles to clicked tab
+            this.classList.remove('text-gray-500');
+            this.classList.add('text-brand-orange', 'border-b-2', 'border-brand-orange', 'bg-white');
+            
+            // Update hidden input value
+            listingTypeInput.value = this.dataset.tab;
+        });
+    });
+    
+    // Location button functionality
+    const getLocationBtn = document.getElementById('getLocationBtn');
+    const locationText = document.getElementById('locationText');
+    const locationInput = document.getElementById('locationInput');
+    
+    getLocationBtn.addEventListener('click', function() {
+        if (navigator.geolocation) {
+            locationText.textContent = 'Getting...';
+            getLocationBtn.classList.add('text-brand-orange');
+            
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    locationInput.value = lat + ',' + lng;
+                    locationText.textContent = 'Location set';
+                    getLocationBtn.classList.add('text-green-500');
+                    getLocationBtn.classList.remove('text-brand-orange');
+                },
+                function(error) {
+                    locationText.textContent = 'Use location';
+                    getLocationBtn.classList.remove('text-brand-orange');
+                    alert('Unable to get location. Please allow location access.');
+                }
+            );
+        } else {
+            alert('Geolocation is not supported by your browser.');
+        }
+    });
+});
+</script>
 
 {% endblock %}
