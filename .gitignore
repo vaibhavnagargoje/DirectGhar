@@ -14,3 +14,17 @@ migrations/
 
 # Django migrations
 **/migrations/
+# Django static files
+**/static/
+venv/
+__pycache__/
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+.DS_Store
+.env
+*.log
+.idea/
+.vscode/
+
